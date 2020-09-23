@@ -1,21 +1,58 @@
 <a href="https://www.hardwario.com/"><img src="https://www.hardwario.com/ci/assets/hw-logo.svg" width="200" alt="HARDWARIO Logo" align="right"></a>
 
-# Firmware Skeleton for HARDWARIO Core Module
+# Firmware for HARDWARIO LoRa IAQ Monitor (CO2, VOC, Temperature, Humidity, Atmospheric pressure)
 
-[![Travis](https://img.shields.io/travis/bigclownlabs/bcf-skeleton/master.svg)](https://travis-ci.org/bigclownlabs/bcf-skeleton)
-[![Release](https://img.shields.io/github/release/bigclownlabs/bcf-skeleton.svg)](https://github.com/bigclownlabs/bcf-skeleton/releases)
-[![License](https://img.shields.io/github/license/bigclownlabs/bcf-skeleton.svg)](https://github.com/bigclownlabs/bcf-skeleton/blob/master/LICENSE)
+[![Travis](https://img.shields.io/travis/bigclownprojects/bcf-lora-iaq-monitor/master.svg)](https://travis-ci.org/bigclownprojects/bcf-lora-iaq-monitor)
+[![Release](https://img.shields.io/github/release/bigclownprojects/bcf-lora-iaq-monitor.svg)](https://github.com/bigclownprojects/bcf-lora-iaq-monitor/releases)
+[![License](https://img.shields.io/github/license/bigclownprojects/bcf-lora-iaq-monitor.svg)](https://github.com/bigclownprojects/bcf-lora-iaq-monitor/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/hardwario_en.svg?style=social&label=Follow)](https://twitter.com/hardwario_en)
 
-This repository contains firmware skeleton for [Core Module](https://shop.bigclown.com/core-module).
+## Description
 
-If you want to get more information about Core Module, firmware and how to work with it, please follow this link:
+Unit measure temperature, relative humidity, atmospheric pressure, carbon dioxide and VOCs.
 
-**https://developers.hardwario.com/firmware/basic-overview/**
+Values is sent every 15 minutes over LoRaWAN. Values are the arithmetic mean of the measured values since the last send.
 
-User's application code (business logic) goes into `app/application.c`.
-The default content works as a *Hello World* example.
-When flashed into Core Module, it toggles LED state with each button press.
+Measure interval is 60s for temperature, relative humidity, orientation. And 5 minutes for atmospheric pressure, VOCs and CO2.
+The battery is measured during transmission.
+
+## Buffer
+big endian
+
+| Byte    | Name        | Type   | multiple | unit
+| ------: | ----------- | ------ | -------- | -------
+|       0 | HEADER      | uint8  |          |
+|       1 | BATTERY     | uint8  | 10       | V
+|  2 -  3 | TEMPERATURE | int16  | 10       | °C
+|       4 | HUMIDITY    | uint8  | 2        | %
+|  5 -  6 | VOC         | uint16 |          | ppb
+|  7 -  8 | PRESSURE    | uint16 | 0.5      | Pa
+|  9 - 10 | CO2         | uint16 |          | ppm
+
+### Header
+
+* 0 - bool
+* 1 - update
+* 2 - button click
+
+## AT
+
+```sh
+picocom -b 115200 --omap crcrlf  --echo /dev/ttyUSB0
+```
+
+## CO2 Calibration
+
+Calibration could be started by long pressing of the button on Core Module or by typing `AT$CALIBRATION` AT command. The LED starts to blink.
+
+After the calibration starts, put the device outside to calibrate to the 400 ppm level by clean outside air. First 15 minutes the LED is blinking fast and this delay is used so the clean outdoor air can flow inside the CO2 sensor.
+
+After initial 15 minutes, the LED starts to blink slower and is doing 32 measurements with 2 minute period between measurements. This second stage takes 64 minutes.
+
+After 32 samples the device will switch to normal operation and LED will stop blinking.
+You can watch the calibration proces over USB. In the AT console there are debug commands. However the device muset be outdoor for proper calibration.
+
+Calibration could be interrupted by long pressing of the button or by typing `AT$CALIBRATION` AT command. The LED stops blinking.
 
 ## License
 
