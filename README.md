@@ -2,7 +2,7 @@
 
 # Firmware for HARDWARIO LoRa IAQ Monitor (CO2, VOC, Temperature, Humidity, Atmospheric pressure)
 
-[![Travis](https://img.shields.io/travis/hardwario/bcf-lora-iaq-monitor/master.svg)](https://travis-ci.org/bigclownprojects/bcf-lora-iaq-monitor)
+[![Travis](https://img.shields.io/travis/hardwario/bcf-lora-iaq-monitor/master.svg)](https://travis-ci.org/hardwario/bcf-lora-iaq-monitor)
 [![Release](https://img.shields.io/github/release/hardwario/bcf-lora-iaq-monitor.svg)](https://github.com/hardwario/bcf-lora-iaq-monitor/releases)
 [![License](https://img.shields.io/github/license/hardwario/bcf-lora-iaq-monitor.svg)](https://github.com/hardwario/bcf-lora-iaq-monitor/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/hardwario_en.svg?style=social&label=Follow)](https://twitter.com/hardwario_en)
