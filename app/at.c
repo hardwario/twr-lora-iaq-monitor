@@ -98,6 +98,29 @@ bool at_appkey_set(bc_atci_param_t *param)
     return true;
 }
 
+bool at_port_read(void)
+{
+    uint8_t port = bc_cmwx1zzabz_get_port(_at.lora);
+
+    bc_atci_printf("$PORT: %d", port);
+
+    return true;
+}
+
+bool at_port_set(bc_atci_param_t *param)
+{
+    uint8_t port = atoi(param->txt);
+
+    if (port < 1 || port > 222)
+    {
+        return false;
+    }
+
+    bc_cmwx1zzabz_set_port(_at.lora, port);
+
+    return true;
+}
+
 bool at_appeui_read(void)
 {
     bc_cmwx1zzabz_get_appeui(_at.lora, _at.tmp);

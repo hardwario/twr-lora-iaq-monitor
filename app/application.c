@@ -25,7 +25,7 @@ bc_tag_barometer_t barometer;
 
 BC_DATA_STREAM_FLOAT_BUFFER(sm_temperature_buffer, (SEND_DATA_INTERVAL / MEASURE_INTERVAL))
 BC_DATA_STREAM_FLOAT_BUFFER(sm_co2_buffer, (SEND_DATA_INTERVAL / MEASURE_INTERVAL_CO2))
-BC_DATA_STREAM_INT_BUFFER(sm_voc_buffer, (SEND_DATA_INTERVAL / MEASURE_INTERVAL_VOC))
+BC_DATA_STREAM_FLOAT_BUFFER(sm_voc_buffer, (SEND_DATA_INTERVAL / MEASURE_INTERVAL_VOC))
 BC_DATA_STREAM_FLOAT_BUFFER(sm_humidity_buffer, (SEND_DATA_INTERVAL / MEASURE_INTERVAL))
 BC_DATA_STREAM_FLOAT_BUFFER(sm_pressure_buffer, (SEND_DATA_INTERVAL / MEASURE_INTERVAL_BAROMETER))
 BC_DATA_STREAM_FLOAT_BUFFER(sm_voltage_buffer, 8)
@@ -151,7 +151,8 @@ void voc_lp_tag_event_handler(bc_tag_voc_lp_t *self, bc_tag_voc_lp_event_t event
 
         if (bc_tag_voc_lp_get_tvoc_ppb(self, &value))
         {
-            bc_data_stream_feed(&sm_voc, &value);
+            float v = value;
+            bc_data_stream_feed(&sm_voc, &v);
         }
     }
 }
@@ -419,7 +420,7 @@ void application_task(void)
     }
     bc_log_debug("TASK");
 
-    static uint8_t buffer[16];
+    static uint8_t buffer[11];
 
     memset(buffer, 0xff, sizeof(buffer));
 
