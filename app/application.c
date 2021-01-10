@@ -50,6 +50,8 @@ enum {
 twr_scheduler_task_id_t calibration_task_id = 0;
 int calibration_counter;
 
+config_t initial_config = { 2 };
+config_t config;
 
 void calibration_task(void *param);
 
@@ -334,6 +336,10 @@ void application_init(void)
 {
 
     twr_log_init(TWR_LOG_LEVEL_DUMP, TWR_LOG_TIMESTAMP_ABS);
+
+    // load configuration from EEPROM
+    twr_config_init(0x1, &config, sizeof(config), &initial_config);
+
     twr_data_stream_init(&sm_temperature, 1, &sm_temperature_buffer);
     twr_data_stream_init(&sm_co2, 1, &sm_co2_buffer);
     twr_data_stream_init(&sm_voc, 1, &sm_voc_buffer);
@@ -393,6 +399,9 @@ void application_init(void)
     twr_cmwx1zzabz_set_event_handler(&lora, lora_callback, NULL);
     twr_cmwx1zzabz_set_mode(&lora, TWR_CMWX1ZZABZ_CONFIG_MODE_ABP);
     twr_cmwx1zzabz_set_class(&lora, TWR_CMWX1ZZABZ_CONFIG_CLASS_A);
+    twr_cmwx1zzabz_set_port(&lora, config.lora_port);
+    sprintf(lora_port_help, "Port: %d", config.lora_port);
+
 
     at_init(&led, &lora);
     static const twr_atci_command_t commands[] = {

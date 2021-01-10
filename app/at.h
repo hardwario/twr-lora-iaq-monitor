@@ -5,6 +5,8 @@
 #include <twr_cmwx1zzabz.h>
 #include <twr_led.h>
 
+char lora_port_help[20];
+
 #define AT_LORA_COMMANDS {"$DEVEUI", NULL, at_deveui_set, at_deveui_read, NULL, ""},\
                          {"$DEVADDR", NULL, at_devaddr_set, at_devaddr_read, NULL, ""},\
                          {"$NWKSKEY", NULL, at_nwkskey_set, at_nwkskey_read, NULL, ""},\
@@ -14,7 +16,7 @@
                          {"$BAND", NULL, at_band_set, at_band_read, NULL, "0:AS923, 1:AU915, 5:EU868, 6:KR920, 7:IN865, 8:US915"},\
                          {"$MODE", NULL, at_mode_set, at_mode_read, NULL, "0:ABP, 1:OTAA"},\
                          {"$NWK", NULL, at_nwk_set, at_nwk_read, NULL, "Network type 0:private, 1:public"},\
-                         {"$PORT", NULL, at_port_set, at_port_read, NULL, ""},\
+                         {"$PORT", NULL, at_port_set, at_port_read, NULL, lora_port_help},\
                          {"$JOIN", at_join, NULL, NULL, NULL, "Send OTAA Join packet"}
 
 #define AT_LED_COMMANDS {"$BLINK", at_blink, NULL, NULL, NULL, "LED blink 3 times"},\

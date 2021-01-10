@@ -5,7 +5,7 @@
 #define VERSION "vdev"
 #endif
 
-#include <bcl.h>
+#include <twr.h>
 
 typedef struct
 {
@@ -22,4 +22,12 @@ typedef struct
 
 } humidity_tag_t;
 
+#define CONFIG_STRUCT_VER 1
+typedef struct config_t
+{
+    uint16_t lora_port;
+} config_t;
+
+extern config_t initial_config;
+extern config_t config;
 #endif // _APPLICATION_H

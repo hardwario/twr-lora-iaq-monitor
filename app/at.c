@@ -1,4 +1,5 @@
 #include <at.h>
+#include "application.h"
 #include <twr_atci.h>
 
 static struct
@@ -117,6 +118,9 @@ bool at_port_set(twr_atci_param_t *param)
     }
 
     twr_cmwx1zzabz_set_port(_at.lora, port);
+    config.lora_port = port;
+    twr_config_save();
+    sprintf(lora_port_help, "Port: %d", port);
 
     return true;
 }
