@@ -151,7 +151,8 @@ void voc_lp_tag_event_handler(twr_tag_voc_lp_t *self, twr_tag_voc_lp_event_t eve
 
         if (twr_tag_voc_lp_get_tvoc_ppb(self, &value))
         {
-            twr_data_stream_feed(&sm_voc, &value);
+            int retyped_value = value;
+            twr_data_stream_feed(&sm_voc, &retyped_value);
         }
     }
 }
